@@ -3,14 +3,19 @@ export const initialState = {
   countCalls: 0
 }
 
-const constants = {
+export const constants = {
   DECREMENT: 'DECREMENT',
-  INCREMENT: 'INCREMENT'
+  INCREMENT: 'INCREMENT',
+  INCREMENT_COMBINED: 'INCREMENT_COMBINED'
 }
 
 export const actions = {
   decrement: () => ({ type: constants.DECREMENT }),
-  increment: () => ({ type: constants.INCREMENT })
+  increment: () => ({ type: constants.INCREMENT }),
+  incrementCombined: steps => ({
+    type: constants.INCREMENT_COMBINED,
+    payload: { steps, increment: actions.increment }
+  })
 }
 
 export default function numberReducer(state = initialState, action) {
