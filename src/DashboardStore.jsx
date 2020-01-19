@@ -39,10 +39,15 @@ const DashboardStoreLayout = styled.div`
 `
 
 export default function DashboardStore(props) {
-  const { incrementCombined } = props
+  const { incrementCombined, nextWithTimestamp } = props
   const onClick = useCallback(
-    () => incrementCombined(3),
-    [incrementCombined])
+    /**
+     * Both actions are wrapped with individual dispatches (each store slice)
+     */
+    () => incrementCombined(() => {
+      nextWithTimestamp(3)
+    }),
+    [incrementCombined, nextWithTimestamp])
 
   const count = useRenderCount()
 

@@ -13,12 +13,8 @@ function mapStateToProps(state, props) {
   }
 }
 
-const mapDispatchToProps = {
-  ...fibonacciActions,
-  ...numberActions
-}
+const DashboardStoreReactConnectedToNumber = connect(NumberContext, state => state, numberActions)(DashboardStore)
+const DashboardStoreReactConnectedToNumberAndFibonacci = connect(FibonacciContext, state => state, fibonacciActions)(DashboardStoreReactConnectedToNumber)
 
-const DashboardStoreReactConnectedToNumber = connect(NumberContext)(DashboardStore)
-const DashboardStoreReactConnectedToNumberAndFibonacci = connect(FibonacciContext)(DashboardStoreReactConnectedToNumber)
+export default connectReduxStore(mapStateToProps)(DashboardStoreReactConnectedToNumberAndFibonacci)
 
-export default connectReduxStore(mapStateToProps, mapDispatchToProps)(DashboardStoreReactConnectedToNumberAndFibonacci)

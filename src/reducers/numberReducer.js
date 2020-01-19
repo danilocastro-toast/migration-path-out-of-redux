@@ -12,9 +12,9 @@ export const constants = {
 export const actions = {
   decrement: () => ({ type: constants.DECREMENT }),
   increment: () => ({ type: constants.INCREMENT }),
-  incrementCombined: steps => ({
+  incrementCombined: (onComplete) => ({
     type: constants.INCREMENT_COMBINED,
-    payload: { steps, increment: actions.increment }
+    payload: { increment: actions.increment, onComplete }
   })
 }
 
