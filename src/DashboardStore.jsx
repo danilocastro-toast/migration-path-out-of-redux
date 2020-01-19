@@ -23,6 +23,11 @@ const DashboardStoreLayout = styled.div`
     flex-direction: column;
     align-items: center;
     grid-row: span 2;
+
+    pre {
+      width: 100%;
+      overflow-y: scroll;
+    }
   }
 `
 

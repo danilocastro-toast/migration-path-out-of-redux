@@ -1,7 +1,8 @@
-import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import { connect } from './react-store'
 import { actions as mapDispatchToProps } from './reducers/fibonacciReducer'
 import FibonacciStore from './FibonacciStore'
+import FibonacciContext from './FibonacciContext'
 
 function getFibonacciTimestamps(state) {
   return state.fibonacciReducer.timestamps
@@ -22,4 +23,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FibonacciStore)
+export default connect(FibonacciContext, mapStateToProps, mapDispatchToProps)(FibonacciStore)

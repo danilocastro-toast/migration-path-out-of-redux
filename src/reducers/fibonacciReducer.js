@@ -1,6 +1,7 @@
 export const initialState = {
   serie: [0, 1],
   timestamps: [Date.now(), Date.now()],
+  countCalls: 0
 }
 
 export const constants = {
@@ -13,6 +14,8 @@ export const actions = {
   nextWithTimestamp: (steps = 1) => ({ type: constants.NEXT_WITH_TIMESTAMP, payload: { steps, next: actions.next } })
 }
 
+actions.nextWithTimestamp.isSaga = true
+
 function nextFib(serie) {
   const lastIndex = serie.length - 1
   return serie[lastIndex] + serie[lastIndex - 1]
@@ -23,12 +26,12 @@ export default function numberReducer(state = initialState, action) {
   
   switch (type) {
     case constants.NEXT:
-      const { serie: baseSerie, timestamps: baseTimestamps } = state
+      const { serie: baseSerie, timestamps: baseTimestamps, countCalls } = state
       let { steps } = payload
       const { timestamp } = payload
       
       if (steps < 1) {
-        return state
+        return { ...state, countCalls: countCalls + 1 }
       }
 
       const serie = [...baseSerie]
@@ -39,8 +42,8 @@ export default function numberReducer(state = initialState, action) {
         steps -= 1
       }
 
-      return { serie, timestamps }
+      return { serie, timestamps, countCalls: countCalls + 1 }
     default:
-      return state
+      return { ...state, countCalls: state.countCalls + 1 }
   }
 }
