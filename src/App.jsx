@@ -26,18 +26,36 @@ window.actions = { fibonacci:  wrap(store, fibonacci), number:  wrap(store, numb
 
 setupMirage()
 
-const sagaMiddleware = createSagaMiddleware()
+// const sagaMiddleware = createSagaMiddleware()
 
-const middlewares = [sagaMiddleware]
+// const middlewares = [sagaMiddleware]
 
+
+// function App() {
+//   const NumberStoreProvider = useStoreProvider(NumberContext, 'numberReducer', numberReducer, initialStateNumber)
+//   const FibonacciStoreProvider = useStoreProvider(FibonacciContext, 'fibonacciReducer', fibonacciReducer, initialStateFibonacci, middlewares)
+
+//   useEffect(() => {
+//     sagas.forEach(saga => {
+//       sagaMiddleware.run(saga)
+//     })
+//   }, [])
+
+const sagaMiddlewareFibonacci = [createSagaMiddleware()]
+const sagaMiddlewareNumber = [createSagaMiddleware()]
 
 function App() {
-  const NumberStoreProvider = useStoreProvider(NumberContext, 'numberReducer', numberReducer, initialStateNumber)
-  const FibonacciStoreProvider = useStoreProvider(FibonacciContext, 'fibonacciReducer', fibonacciReducer, initialStateFibonacci, middlewares)
+  const NumberStoreProvider = useStoreProvider(NumberContext, 'numberReducer', numberReducer, initialStateNumber, sagaMiddlewareNumber)
+  const FibonacciStoreProvider = useStoreProvider(FibonacciContext, 'fibonacciReducer', fibonacciReducer, initialStateFibonacci, sagaMiddlewareFibonacci)
 
   useEffect(() => {
     sagas.forEach(saga => {
-      sagaMiddleware.run(saga)
+      [
+        ...sagaMiddlewareFibonacci,
+        ...sagaMiddlewareNumber
+      ].forEach(middleware => {
+        middleware.run(saga)
+      })
     })
   }, [])
   return (
@@ -52,3 +70,4 @@ function App() {
 }
 
 export default App;
+

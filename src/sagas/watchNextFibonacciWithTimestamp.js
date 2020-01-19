@@ -13,6 +13,7 @@ function* nextFibonacciWithTimestamp(action) {
   const { payload } = action
   const { next, steps } = payload
 
+  console.log({ next, steps })
   const response = yield fetch(`${window.location.origin}/api/timestamp`)
   const data = yield call(json, response)
   if (response.ok) {

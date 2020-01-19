@@ -38,10 +38,19 @@ const DashboardStoreLayout = styled.div`
 `
 
 export default function DashboardStore(props) {
-  const { incrementCombined } = props
+  // const { incrementCombined } = props
+  // const onClick = useCallback(
+  //   () => incrementCombined(3),
+  //   [incrementCombined])
+  const { incrementCombined, nextWithTimestamp } = props
   const onClick = useCallback(
-    () => incrementCombined(3),
-    [incrementCombined])
+    /**
+     * Both actions are wrapped with individual dispatches (each store slice)
+     */
+    () => incrementCombined(() => {
+      nextWithTimestamp(3)
+    }),
+    [incrementCombined, nextWithTimestamp])
   return (
     <DashboardStoreLayout>
       <Dashboard className="DashboardStoreLayout__dashboard">
