@@ -1,7 +1,8 @@
-import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { actions as mapDispatchToProps } from './reducers/numberReducer'
+import { connect } from './react-store'
+import NumberContext from './NumberContext'
 import NumberStore from './NumberStore'
+import { actions as mapDispatchToProps } from './reducers/numberReducer'
 
 function getNumber(state) {
   return state.numberReducer.number
@@ -21,4 +22,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NumberStore)
+export default connect(NumberContext, mapStateToProps, mapDispatchToProps)(NumberStore)
