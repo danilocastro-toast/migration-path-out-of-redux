@@ -11,5 +11,5 @@ export default function useStoreData(context, mapDispatchToProps = DEFAULT_OBJEC
     })
 
     return [getState(), actions]
-  }, [getState, mapDispatchToProps, dispatch])
+  }, [mapDispatchToProps, getState, dispatch])
 }
