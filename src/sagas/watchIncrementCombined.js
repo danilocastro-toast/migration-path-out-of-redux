@@ -1,13 +1,12 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import { constants } from '../reducers/numberReducer'
-import { actions as fibonacciActions } from '../reducers/fibonacciReducer'
 
 function* incrementCombined(action) {
   const { payload } = action
-  const { steps, increment } = payload
+  const { increment, onComplete } = payload
 
   yield put(increment())
-  yield put(fibonacciActions.nextWithTimestamp(steps))
+  yield call(onComplete)
 }
 
 export default function* watchIncrementCombined() {
