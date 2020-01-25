@@ -1,18 +1,20 @@
-import { connect } from 'react-redux'
+import { connect as connectReduxStore } from 'react-redux'
+import { connect } from './react-store'
 import DashboardStore from './DashboardStore'
 import { actions as fibonacciActions } from './reducers/fibonacciReducer'
 import { actions as numberActions } from './reducers/numberReducer'
+import NumberContext from './NumberContext'
+import FibonacciContext from './FibonacciContext'
 
 function mapStateToProps(state, props) {
   return {
-    ...state,
+    redux: state,
     ...props
   }
 }
 
-const mapDispatchToProps = {
-  ...fibonacciActions,
-  ...numberActions
-}
+const DashboardStoreReactConnectedToNumber = connect(NumberContext, state => state, numberActions)(DashboardStore)
+const DashboardStoreReactConnectedToNumberAndFibonacci = connect(FibonacciContext, state => state, fibonacciActions)(DashboardStoreReactConnectedToNumber)
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardStore)
+export default connectReduxStore(mapStateToProps)(DashboardStoreReactConnectedToNumberAndFibonacci)
+
