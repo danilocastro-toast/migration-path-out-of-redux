@@ -16,5 +16,5 @@ function mapStateToProps(state, props) {
 const DashboardStoreReactConnectedToNumber = connect(NumberContext, state => state, numberActions)(DashboardStore)
 const DashboardStoreReactConnectedToNumberAndFibonacci = connect(FibonacciContext, state => state, fibonacciActions)(DashboardStoreReactConnectedToNumber)
 
-export default connectReduxStore(mapStateToProps)(DashboardStoreReactConnectedToNumberAndFibonacci)
+export default DashboardStoreReactConnectedToNumberAndFibonacci
 

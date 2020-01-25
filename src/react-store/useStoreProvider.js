@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useRef, useCallback } from 'react'
+import React, { useContext, useEffect, useMemo, useReducer, useRef, useCallback } from 'react'
 
 const defaultMiddlewares = []
 
@@ -14,26 +14,43 @@ function applyMiddleware(store, middlewares) {
 
 export default function useStoreProvider(context, sliceName, reducer, initialState, middlewares = defaultMiddlewares) {
   const { Provider } = context
-  return useMemo(() => function StoreProvider(props) {
-    const [state, dispatch] = useReducer(reducer, initialState)
-    
-    const stateRef = useRef(state)
-    const getState = useCallback(() => stateRef.current, [])
-    useEffect(() => {
-      stateRef.current = state
-    }, [state])
+  const contextStore = useContext(context)
+  return useMemo(() => {
+    if (contextStore && contextStore.__isDefault) {
+      return StoreProvider
+    }
 
-    const { dispatch: proxyDispatch } = useMemo(
-      () => applyMiddleware({ getState, dispatch }, middlewares), [getState])
-    const store = useMemo(() => ({
-      getState: () => ({ [sliceName]: state }),
-      dispatch: proxyDispatch
-    }), [proxyDispatch, state])
+    return StoreProviderDelegate
 
-    return (
-      <Provider value={store}>
-        {props.children}
-      </Provider>
-    )
-  }, [initialState, middlewares, reducer, sliceName])
+    function StoreProviderDelegate({ children }) {
+      return (
+        <Provider value={contextStore}>
+          {children}
+        </Provider>
+      )
+    }
+
+    function StoreProvider(props) {
+      const [state, dispatch] = useReducer(reducer, initialState)
+      
+      const stateRef = useRef(state)
+      const getState = useCallback(() => stateRef.current, [])
+      useEffect(() => {
+        stateRef.current = state
+      }, [state])
+  
+      const { dispatch: proxyDispatch } = useMemo(
+        () => applyMiddleware({ getState, dispatch }, middlewares), [getState])
+      const store = useMemo(() => ({
+        getState: () => ({ [sliceName]: state }),
+        dispatch: proxyDispatch
+      }), [proxyDispatch, state])
+  
+      return (
+        <Provider value={store}>
+          {props.children}
+        </Provider>
+      )
+    }
+  }, [contextStore, initialState, middlewares, reducer, sliceName])
 }

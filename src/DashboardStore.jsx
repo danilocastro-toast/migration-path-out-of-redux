@@ -52,7 +52,7 @@ export default function DashboardStore(props) {
       <Dashboard className="DashboardStoreLayout__dashboard">
         <DashboardItem className="DashboardStoreLayout__dashboard-item DashboardStoreLayout__store">
           <h1>JSON Store</h1>
-          <button type="button" onClick={onClick}>Increment Combined</button>
+          <button data-testid="combined-action" type="button" onClick={onClick}>Increment Combined</button>
           <pre>
             {JSON.stringify(props, null, 2)}
           </pre>
