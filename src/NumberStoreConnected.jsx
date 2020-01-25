@@ -1,8 +1,7 @@
+import React, { useMemo } from 'react'
 import { createSelector } from 'reselect'
-import { connect } from './react-store'
-import NumberContext from './NumberContext'
 import NumberStore from './NumberStore'
-import { actions as mapDispatchToProps } from './reducers/numberReducer'
+import useNumberObservableState from './states/useNumberObservableState'
 
 function getNumber(state) {
   return state.numberReducer.number
@@ -13,13 +12,30 @@ const guessPredictions = createSelector(
   number => [number - 1, number, number + 1]
 )
 
-function mapStateToProps(state) {
-  const [previous, current, next] = guessPredictions(state)
-  return {
-    previous,
-    current,
-    next
-  }
+function useNumberStoreConnected() {
+  const { state, actions } = useNumberObservableState()
+  return useMemo(() => {
+    const [previous, current, next] = guessPredictions({ numberReducer: state })
+
+    return [
+      {
+        ...state,
+        previous,
+        current,
+        next
+      },
+      actions
+    ]
+  }, [actions, state])
 }
 
-export default connect(NumberContext, mapStateToProps, mapDispatchToProps)(NumberStore)
+export default function NumberStoreConnected() {
+  const [state, actions] = useNumberStoreConnected()
+
+  return (
+    <NumberStore
+      {...state}
+      {...actions}
+    />
+  )
+}
