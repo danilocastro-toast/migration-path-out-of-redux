@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Dashboard from './Dashboard'
 import DashboardItem from './DashboardItem'
 import FibonacciStore from './FibonacciStoreConnected'
 import NumberStore from './NumberStoreConnected'
-import useRenderCount from './useRenderCount'
-import InternalBlock from './InternalBlock'
+import CombinedStore from './CombinedStore'
 
 const DashboardStoreLayout = styled.div`
   height: 100%;
@@ -39,30 +38,12 @@ const DashboardStoreLayout = styled.div`
   }
 `
 
-export default function DashboardStore(props) {
-  const { incrementCombined, nextWithTimestamp } = props
-  const onClick = useCallback(
-    /**
-     * Both actions are wrapped with individual dispatches (each store slice)
-     */
-    () => incrementCombined(() => {
-      nextWithTimestamp(3)
-    }),
-    [incrementCombined, nextWithTimestamp])
-
-  const count = useRenderCount()
-
+export default function DashboardStore() {
   return (
     <DashboardStoreLayout>
       <Dashboard className="DashboardStoreLayout__dashboard">
         <DashboardItem className="DashboardStoreLayout__dashboard-item DashboardStoreLayout__store">
-          <h1>JSON Store</h1>
-          {count}
-          <button type="button" onClick={onClick}>Increment Combined</button>
-          <InternalBlock />
-          <pre>
-            {JSON.stringify(props, null, 2)}
-          </pre>
+          <CombinedStore />
         </DashboardItem>
         <DashboardItem className="DashboardStoreLayout__dashboard-item">
           <NumberStore />
