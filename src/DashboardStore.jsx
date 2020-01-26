@@ -5,6 +5,7 @@ import DashboardItem from './DashboardItem'
 import FibonacciStore from './FibonacciStoreConnected'
 import NumberStore from './NumberStoreConnected'
 import useRenderCount from './useRenderCount'
+import InternalBlock from './InternalBlock'
 
 const DashboardStoreLayout = styled.div`
   height: 100%;
@@ -58,6 +59,7 @@ export default function DashboardStore(props) {
           <h1>JSON Store</h1>
           {count}
           <button type="button" onClick={onClick}>Increment Combined</button>
+          <InternalBlock />
           <pre>
             {JSON.stringify(props, null, 2)}
           </pre>
