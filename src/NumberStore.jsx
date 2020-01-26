@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useRenderCount from './useRenderCount'
-
+import InternalBlock from './InternalBlock'
 
 const NumberStoreLayout = styled.div`
   height: 100%;
@@ -59,6 +59,7 @@ export default function NumberStore(props) {
         <span>{previous}</span>
         <span>{current}</span>
         <span>{next}</span>
+        <InternalBlock />
       </div>
     </NumberStoreLayout>
   )

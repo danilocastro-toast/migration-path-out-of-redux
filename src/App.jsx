@@ -1,18 +1,13 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import './App.css';
-import DashboardStore from './DashboardStoreConnected';
 import setupMirage from './setupMirage';
-import store from './store';
+import DashboardStore from './DashboardStore';
 
 setupMirage()
 
 function App() {
-  return (
-    <Provider store={store}>
-      <DashboardStore />
-    </Provider>
-  );
+  return (<DashboardStore />);
 }
 
 export default App;
+
