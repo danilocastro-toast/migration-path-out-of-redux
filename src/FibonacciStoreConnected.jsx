@@ -1,8 +1,7 @@
+import React, { useMemo } from 'react'
 import { createSelector } from 'reselect'
-import { connect } from './react-store'
-import { actions as mapDispatchToProps } from './reducers/fibonacciReducer'
 import FibonacciStore from './FibonacciStore'
-import FibonacciContext from './FibonacciContext'
+import useFibonacciObservableState from './states/useFibonacciObservableState'
 
 function getFibonacciTimestamps(state) {
   return state.fibonacciReducer.timestamps
@@ -13,14 +12,28 @@ const getLastUpdate = createSelector(
   timestamps => new Date(timestamps[timestamps.length - 1]).toLocaleString()
 )
 
+export function useFibonacciStoreConnected() {
+  const { state, actions } = useFibonacciObservableState()
+  return useMemo(() => {
+    const lastUpdate = getLastUpdate({ fibonacciReducer: state})
 
-function mapStateToProps(state) {
-  const { fibonacciReducer } = state
-  const lastUpdate = getLastUpdate(state)
-  return {
-    ...fibonacciReducer,
-    lastUpdate
-  }
+    return [
+      {
+        ...state,
+        lastUpdate
+      },
+      actions
+    ]
+  }, [actions, state])
 }
 
-export default connect(FibonacciContext, mapStateToProps, mapDispatchToProps)(FibonacciStore)
+export default function FibonacciStoreConnected() {
+  const [state, actions] = useFibonacciStoreConnected()
+
+  return (
+    <FibonacciStore
+      {...state}
+      {...actions}
+    />
+  )
+}

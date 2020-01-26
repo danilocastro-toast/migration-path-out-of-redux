@@ -12,7 +12,7 @@ const guessPredictions = createSelector(
   number => [number - 1, number, number + 1]
 )
 
-function useNumberStoreConnected() {
+export function useNumberStoreConnected() {
   const { state, actions } = useNumberObservableState()
   return useMemo(() => {
     const [previous, current, next] = guessPredictions({ numberReducer: state })
